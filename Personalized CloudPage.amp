@@ -1,0 +1,40 @@
+%%[
+/* source: https://salesforce.stackexchange.com/questions/249044/pulling-personalized-content-to-landing-page */
+
+/************************** 
+* This is the code in the email which takes us to the CloudPage
+***************************/
+var @country, @language
+set @country =  [country] /* when the dataextension column is named country */
+set @language = [language] /* when the dataextension column is named language*/
+set @cp_url = CloudPagesURL(4508) /* your cloudpage id */
+set @cp_url_comb = Concat(@cp_url,"?country=",@country,"&language=",@language)
+]%%
+
+
+
+<p>Personalized CloudPage link</p>
+<p>%%=v(@cp_url_comb)=%%</p>
+
+<br>
+
+<p><a title="MyPage" href="%%=RedirectTo(@cp_url_comb)=%%" alias="someAlias" conversion="false">Redirect to personalized CloudPage</a></p>
+
+
+
+<!-- This is the code on the CloudPage which takes in parameters from URL link which led to this CloudPage -->
+
+%%[
+set @country = RequestParameter("country")
+set @language = RequestParameter("language")
+
+set @paramLength = Length(@country)
+
+/* or retrieve the subscriberkey */
+set @subscriberKey = AttributeValue("_subscriberkey")
+/* and then do a lookup / lookuprows / lookupoderedrows towards a dataextension where all your subscribers are*/
+
+]%%
+
+<p>Length of the passed country parameter:</p>
+<p>%%=v(@paramLength)=%%</p>
