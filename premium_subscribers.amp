@@ -1,0 +1,13 @@
+<h2>Testing premium membership email</h2>
+
+%%[
+
+IF [level] == 'premier' THEN 
+	SET @message = 'You are premier member!'
+ELSE
+	SET @message = 'Upgrade to premier now!'
+ENDIF
+
+]%%
+
+%%=v(@message)=%%

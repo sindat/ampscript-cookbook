@@ -1,0 +1,46 @@
+%%[ 
+/* DO NOT EDIT */ 
+Var @jid, @pnum, @ctype, @ptype, @stype, @pcode 
+Var @Hello 
+Set @jid = jobid 
+/* Set Variables here for easy editing */ 
+Set @pnum = "SendTest" 
+Set @ctype = "SendTest" 
+Set @ptype = "SendTest" 
+Set @stype = "SendTest" 
+Set @pcode = "SendTest" 
+/* Check to see if a record exists with this JobID */ 
+Set @lookUp = LookupRows("Campaign Log","JobID",@jid) 
+IF RowCount(@lookUp) == 0 THEN 
+Set @Hello = 'Hello?' 
+/* If no record exists with this JobID Insert Variables into the Data Extension */ 
+UpsertDE("Campaign Log", 1, "JobID", @jid, "ProjectNumber", @pnum, "ComType", @ctype, "ProgType", @ptype, "ProgCode", @pcode, "ProgSubType", @stype) 
+ELSE 
+Set @Hello = 'Hola!' 
+ENDIF 
+]%% 
+
+
+<h1>Variables</h1> 
+%%=v(@jid)=%% 
+<br/> 
+%%=v(@Hello)=%% 
+<br/> 
+%%=v(@lookUp)=%% 
+<br/> 
+%%=EMPTY(@lookUp)=%% 
+<br/> 
+%%=RowCount(@lookUp)=%% 
+<br/> 
+%%=v(@pnum)=%% 
+<br/> 
+%%=v(@ctype)=%% 
+<br/> 
+%%=v(@ptype)=%% 
+<br/> 
+%%=v(@stype)=%% 
+<br/> 
+%%=v(@pcode )=%% 
+
+
+<br/>
