@@ -1,0 +1,60 @@
+%%[
+
+set @someTable = retrievesalesforceobjects('Questionario__c','Pesquisador__c,Status_anterior_do_questionario__c,Nome_Job_simplificado__c,Local_de_Avaliacao__c,Status_do_Questionario__c','Status_anterior_do_questionario__c','=','Em Andamento','Status_do_Questionario__c','=','Expirado','Pesquisador__c','=',@id)
+
+
+set @rowcount = rowcount(@someTable)
+var @numerator
+
+FOR @numerator = 1 TO @rowcount DO
+  
+  
+  IF mod(@numerator,2) == 0 THEN /* Even rows get a red color*/
+    SET @color = 'Red'
+  ELSE
+    SET @color = 'White' /* Odd rows get a white color*/
+  ENDIF
+
+NEXT @numerator
+
+
+
+]%%
+
+
+
+
+
+
+
+
+%%[
+
+set @localjob = AttributeValue('Questionario__c:Local_de_Avaliacao__c') set @nomejob = AttributeValue('Questionario__c:Nome_Job_simplificado__c') set @id = AttributeValue('Questionario__c:Pesquisador__c')
+
+set @Questionario = retrievesalesforceobjects('Questionario__c','Pesquisador__c,Status_anterior_do_questionario__c,Nome_Job_simplificado__c,Local_de_Avaliacao__c,Status_do_Questionario__c','Status_anterior_do_questionario__c','=','Em Andamento','Status_do_Questionario__c','=','Expirado','Pesquisador__c','=',@id)
+
+set @rowcount = rowcount(@Questionario)
+
+
+set @styletd = "-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; border: 1px solid #606060; border-collapse: collapse !important; color: #606060; font-family: 'Ubuntu', 'Candara', 'Arial', sans-serif; font-size: 10px; line-height: 120%; padding: 8px 0;"
+
+]%%
+
+<table>
+
+%%[ for @contador = 1 to @rowcount do
+
+set @rowcelula = row(@Questionario,@contador)
+
+set @fieldcelula1 = field(@rowcelula,'Nome_Job_simplificado__c')
+
+set @fieldcelula2 = field(@rowcelula,'Local_de_Avaliacao__c')
+
+set @linha = CONCAT('<tr><td align="center" style="',@styletd,'">',@fieldcelula1,'</td>','<td align="center" style="',@styletd,'">',@fieldcelula2,'</td></tr>')
+
+v(@linha)
+
+next @contador ]%%
+
+</table>
